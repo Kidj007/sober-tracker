@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sober Day Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        #daysSober {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+        form {
+            margin: 20px 0;
+        }
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sober Day Tracker</h1>
+    <form id="dateForm" style="display: none;">
+        <label for="soberDate">Enter the date you stopped drinking:</label><br><br>
+        <input type="date" id="soberDate" name="soberDate" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <p id="daysSober"></p>
+
+    <script>
+        window.onload = function() {
+            let storedDate = localStorage.getItem("soberDate");
+            if (storedDate) {
+                calculateDaysSober(storedDate);
+            } else {
+                document.getElementById("dateForm").style.display = "block";
+            }
+        }
+
+        document.getElementById("dateForm").onsubmit = function(e) {
+            e.preventDefault();
+            let soberDate = document.getElementById("soberDate").value;
+            if (soberDate) {
+                localStorage.setItem("soberDate", soberDate);
+                calculateDaysSober(soberDate);
+            }
+        }
+
+        function calculateDaysSober(soberDate) {
+            let today = new Date();
+            let dateEntered = new Date(soberDate);
+            let diffTime = today - dateEntered;
+            let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById("daysSober").textContent = diffDays + " days sober!";
+            document.getElementById("dateForm").style.display = "none";
+        }
+    </script>
+</body>
+</html>
